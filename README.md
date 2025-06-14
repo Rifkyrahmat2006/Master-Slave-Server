@@ -181,9 +181,9 @@ buka file `pom.xml`, kemudian ganti semua dengan yang ada dibawah ini:
 ```
 
 Setelah itu kembali ke CMD tadi, lalu install dependensi dengan menjalankan command berikut:
-```bash
+``bash
 mvn install
-```
+``
 
 Jika terjadi error setelah menjalankan `mvn install` yang bertuliskan
 ```
