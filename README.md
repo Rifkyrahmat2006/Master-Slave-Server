@@ -36,7 +36,7 @@ copy path yang di bin (C:\apache-maven-3.9.10\bin), lalu buka aplikasi "Edit the
 
 ## 3. Setup Project
 buka CMD di path yang diinginkan (Contoh: D:\Maven), lalu jalankan:
-```
+```bash
 mvn archetype:generate -DgroupId=com.mycompany.app -DartifactId=my-app -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeVersion=1.5 -DinteractiveMode=false
 ```
 Anda akan melihat bahwa tujuan generate membuat direktori dengan nama yang sama dengan artifactId. Ubahlah direktori tersebut.
@@ -44,60 +44,60 @@ Anda akan melihat bahwa tujuan generate membuat direktori dengan nama yang sama 
 cd my-app
 ```
 buka vscode dengan command:
-```
+```bash
 code .
 ```
 
 ## 3. Install Mongo 4.4 pada masing-masing Server
 ### Ikuti satu per satu command dibawah ini:
-```
+```bash
 curl -fsSL https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -
 ```
 This command will return `OK` if the key was added successfully
 
 ### Kemudian:
-```
+```bash
 echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/4.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.4.list
 ```
 
 ### After running this command, update your server’s local package index so APT knows where to find the mongodb-org package:
-```
+```bash
 sudo apt update
 ```
 
 ### Following that, you can install MongoDB:
-```
+```bash
 sudo apt install mongodb-org -y
 ```
 
 ### Then check the service’s status. Notice that this command doesn’t include .service in the service file definition. systemctl will append this suffix to whatever argument you pass automatically if it isn’t already present, so it isn’t necessary to include it:
-```
+```bash
 sudo systemctl status mongod
 ```
 
 ### Run the following systemctl command to start the MongoDB service:
-```
+```bash
 sudo systemctl start mongod.service
 ```
 
 ### After confirming that the service is running as expected, enable the MongoDB service to start up at boot:
-```
+```bash
 sudo systemctl enable mongod
 ```
 
 ### Referensi:
-```
+```bash
 https://www.digitalocean.com/community/tutorials/how-to-install-mongodb-on-ubuntu-20-04
 ```
 
 ## 5. Setup MongoDB untuk Replica Set
 ### Lihat IP Address dari masing-masing server:
-```
+```bash
 hostname -I
 ```
 
 ### Edit IP & Replicatiton pada kedua server
-```
+```bash
 sudo nano /etc/mongod.conf
 ```
 Cari
@@ -114,41 +114,41 @@ net:
 Cari
 `#replication`
 Kemudian ubah menjadi
-```
+```bash
 replication:
   replSetName: rs0
 ```
 lalu untuk exit jalankan `ctrl+x` dan `y` lalu `ENTER`
 
 Agar `mongod.conf` berjalan, kita perlu menjalankan satu per satu command berikut:
-```
+```bash
 sudo systemctl restart mongod
 ```
-```
+```bash
 mkdir -p /data/db0
 ```
-```
+```bash
 sudo mongod --replSet rs0 --dbpaath /data/db0 --port 27017
 ```
-```
+```bash
 sudo systemctl restart mongod
 ```
-```
+```bash
 sudo mongod --replSet rs0 --dbpaath /data/db0 --port 27017
 ```
-```
+```bash
 sudo systemctl restart mongod
 ```
 
 ## 6. Inisiasi Replica Set
 Langkah ini dilakukan 'HANYA' dari Server Linux 1 (Primary).
 1. Masuk ke Shell MongoDB di primary:
-```
+```bash
 mongo
 ```
 2. Inisiasi Replica Set:
 Di dalam shell mongo, jalankan perintah berikut menggunakan IP Address Anda:
-```
+```js
 rs.initiate(
   {
     _id: "rs0",
@@ -163,7 +163,7 @@ Tunggu hingga prompt berubah menjadi `rs0:PRIMARY>`.
 
 3. Verifikasi Status:
 Masih di shell mongo pada mongo_primary:
-```
+```js
 rs.status()
 ```
 Pastikan kedua anggota (IP_PRIMARY:27017 dan IP_SECONDARY:27017) muncul, satu sebagai PRIMARY dan satu lagi sebagai SECONDARY, keduanya dengan `health: 1`.
@@ -171,11 +171,11 @@ Pastikan kedua anggota (IP_PRIMARY:27017 dan IP_SECONDARY:27017) muncul, satu se
 ## 7. Menyiapkan Proyek Program C di Windows
 1. Buat dan Masuk ke Direktori Proyek Baru(Anda bisa menggunakan direktori lainnya):
 Buka MSYS2 MINGW64 Shell dan masuk. Contoh:
-```
+```bash
 cd /c/Users/rifky/Documents/ProyekMongoReplicaSet
 ```
 2. Clone Repo Ini
-```
+```bash
 git clone https://github.com/Rifkyrahmat2006/Master-Slave-Server.git
 ```
 ## 8. Mengkompilasi Program C
