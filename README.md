@@ -180,11 +180,11 @@ buka file `pom.xml`, kemudian ganti semua dengan yang ada dibawah ini:
 </project>
 ```
 
-Setelah itu kembali ke CMD tadi, lalu install dependensi dengan menjalankan command berikut:
-``bash
-mvn install
-``
 
+Setelah itu kembali ke CMD tadi, lalu install dependensi dengan menjalankan command berikut:
+```bash
+mvn install
+```
 Jika terjadi error setelah menjalankan `mvn install` yang bertuliskan
 ```
 No compiler is provided in this environment. Perhaps you are running on a JRE rather than a JDK?
