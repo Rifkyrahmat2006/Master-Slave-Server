@@ -1,8 +1,9 @@
 # MASTER-SLAVE-SERVER
 
-*by Rifky D.R. Prakoso*
+*by Rifky D.R. Prakoso & Arzaq Vincent P. Prasetyo*
 
 
+[![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://instagram.com/rifky.prakoso_)
 [![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://instagram.com/rifky.prakoso_)
 
 Built with the tools and technologies:
@@ -12,6 +13,7 @@ Built with the tools and technologies:
 ![MAVEN](https://img.shields.io/badge/MAVEN-000000?style=for-the-badge&logo=apachemaven&logoColor=white)
 ![MONGODB](https://img.shields.io/badge/-MongoDB-000000?style=for-the-badge&logo=mongodb&logoColor=white)
 ![UBUNTU SERVER](https://img.shields.io/badge/Ubuntu-000000?style=for-the-badge&logo=Ubuntu&logoColor=white)
+ADOPTIUM
 
 Remote server menggunakan program Java ke server mongodb dengan konfigurasi master dan slave. Berikut langkah-langkahnya:
 
