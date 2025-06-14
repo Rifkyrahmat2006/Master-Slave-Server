@@ -337,59 +337,75 @@ rs.status()
 ```
 Pastikan kedua anggota (IP_PRIMARY:27017 dan IP_SECONDARY:27017) muncul, satu sebagai PRIMARY dan satu lagi sebagai SECONDARY, keduanya dengan `health: 1`.
 
-## 7. Menyiapkan Proyek Program C di Windows
-1. Buat dan Masuk ke Direktori Proyek Baru(Anda bisa menggunakan direktori lainnya):
-Buka MSYS2 MINGW64 Shell dan masuk. Contoh:
-```bash
-cd /c/Users/rifky/Documents/ProyekMongoReplicaSet
-```
-2. Clone Repo Ini
-```bash
-git clone https://github.com/Rifkyrahmat2006/Master-Slave-Server.git
-```
-## 8. Mengkompilasi Program C
-1. Pastikan Anda Masih Berada di Direktori Proyek. Contoh:
-(/c/Users/rifky/Documents/ProyekMongoReplicaSet) di MSYS2 MINGW64 shell.
-2. Jalankan Perintah Kompilasi GCC:
-```
-gcc kirim_data_final.c -o kirim_data_final.exe \
-    -I/c/mongodb_c_driver/include/mongoc-2.0.1 \
-    -I/c/mongodb_c_driver/include/bson-2.0.1 \
-    -L/c/mongodb_c_driver/lib \
-    -lmongoc2 -lbson2 \
-    -lws2_32 -lsecur32 -lcrypt32 -lbcrypt -ldnsapi -lzstd
-```
-Jika berhasil, `kirim_data_final.exe` akan dibuat.
+## 7. Menyiapkan Program Java di Client(Windows)
+### Ubah semua App.java, menjadi seperti di bawah ini:
+```java
+package com.mycompany.app;
 
-## 9. Menyiapkan File DLL yang Diperlukan
-Pastikan anda masih di direktori yang sama (/c/Users/rifky/Documents/ProyekMongoReplicaSet) 
+import com.mongodb.MongoClientSettings;
+import com.mongodb.MongoException;
+import com.mongodb.client.*;
+import com.mongodb.client.model.InsertOneOptions;
+import org.bson.Document;
+import static com.mongodb.client.model.Filters.regex;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.*;
+
+public class App {
+	String PORT_MASTER = "192.x.x.x:27017"; // IP_MASTER:PORT
+	String PORT_SLAVE = "192.x.x.x:27017"; // IP_SLAVE:PORT 
+
+	public void insert() {
+        String uri = "mongodb://" + PORT_MASTER + "," + PORT_SLAVE;
+        String dbName = "test"; // nama database;
+        String collName = "data_apalah"; // nama collection/table;
+
+        try (MongoClient mongoClient = MongoClients.create(uri)) {
+            MongoDatabase database = mongoClient.getDatabase(dbName);
+            MongoCollection<Document> collection = database.getCollection(collName);
+
+			Document doc = new Document();
+			doc.append("name", "buidanto");
+			doc.append("nim", "123456");
+
+			try {
+				collection.insertOne(doc, new InsertOneOptions());
+				System.out.println("Insert data success");
+            } catch (MongoException me) {
+                System.err.println("Insert failed: " + me.getMessage());
+            }
+        } catch (Exception e) {
+			System.err.println("[ERROR]: " + e.getMessage());
+		}
+    }
+
+    public static void main(String[] args) {
+		App app = new App();
+		app.insert();
+    }
+}
 ```
-# Cek nama file DLL yang benar di /c/mongodb_c_driver/bin/
-cp /c/mongodb_c_driver/bin/libmongoc2.dll . 
-cp /c/mongodb_c_driver/bin/libbson2.dll .
-# Salin DLL dependensi dari MinGW
-cp /mingw64/bin/libzstd.dll .
-cp /mingw64/bin/zlib1.dll .
+2. Menjalankan Program
+Setelah mengubah isi `App.java`, jalankan ulang perintah dibawah ini untuk membersihkan cache sebelumnya dan men-compile ulang project
+```bash
+mvn clean compile assembly:single
 ```
-## 10. Menjalankan Program C di Windows
-1. Pastikan Replica Set MongoDB Anda Berjalan dan sehat.
-2. Jalankan Program dari MSYS2 MINGW64 Shell: Di direktori tempat anda meng-clone repo ini
+Kemudian jalankan jar file:
+```bash
+java -jar target\my-app-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
-./kirim_data_replset.exe data_input_replset.json
-```
-3. Periksa Output Program: Anda akan melihat pesan koneksi dan (semoga) pesan sukses.
+Apabila setelah dijalankan memunculkan output `Insert data success` maka program telat berhasil dijalankan dan data berhasil di masukan kedalam mongo server
 
 ## 11. Memverifikasi Data di MongoDB Replica Set
-1. Hubungkan ke PRIMARY MongoDB: Di terminal Server Linux PRIMARY/MASTER:
+Periksa Data: Di dalam shell mongo:
 ```
-sudo docker exec -it mongo_primary mongo
-```
-2. Periksa Data: Di dalam shell mongo:
-```
-use NAMA_DATABASE_ANDA; // Ganti dengan nama database yang Anda gunakan di C
+use NAMA_DATABASE_ANDA; // Ganti dengan nama database yang Anda gunakan di Java
 db.NAMA_COLLECTION_ANDA.find().pretty(); // Ganti dengan nama collection
 ```
-Anda seharusnya melihat data baru. Anda juga bisa terhubung ke SECONDARY/SLAVE (Server Linux 2, kontainer mongo_secondary) jalankan `rs.slaveOk()`, lalu periksa datanya menggunakan perintah diatas untuk melihat replikasi.
+Anda seharusnya melihat data baru. Anda juga bisa terhubung ke SECONDARY (Server Linux 2) jalankan `rs.slaveOk()` atau `rs.secondaryOk()`, lalu periksa datanya menggunakan perintah diatas untuk melihat replikasi.
 
 
 
