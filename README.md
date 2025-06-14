@@ -359,13 +359,13 @@ public class App {
 	String PORT_SLAVE = "192.x.x.x:27017"; // IP_SLAVE:PORT 
 
 	public void insert() {
-        String uri = "mongodb://" + PORT_MASTER + "," + PORT_SLAVE;
-        String dbName = "test"; // nama database;
-        String collName = "data_apalah"; // nama collection/table;
+        	String uri = "mongodb://" + PORT_MASTER + "," + PORT_SLAVE;
+        	String dbName = "test"; // nama database;
+        	String collName = "data_apalah"; // nama collection/table;
 
-        try (MongoClient mongoClient = MongoClients.create(uri)) {
-            MongoDatabase database = mongoClient.getDatabase(dbName);
-            MongoCollection<Document> collection = database.getCollection(collName);
+        	try (MongoClient mongoClient = MongoClients.create(uri)) {
+            		MongoDatabase database = mongoClient.getDatabase(dbName);
+            		MongoCollection<Document> collection = database.getCollection(collName);
 
 			Document doc = new Document();
 			doc.append("name", "buidanto");
@@ -374,18 +374,18 @@ public class App {
 			try {
 				collection.insertOne(doc, new InsertOneOptions());
 				System.out.println("Insert data success");
-            } catch (MongoException me) {
-                System.err.println("Insert failed: " + me.getMessage());
-            }
-        } catch (Exception e) {
+			} catch (MongoException me) {
+                		System.err.println("Insert failed: " + me.getMessage());
+            		}
+        	} catch (Exception e) {
 			System.err.println("[ERROR]: " + e.getMessage());
 		}
-    }
+    	}
 
-    public static void main(String[] args) {
+    	public static void main(String[] args) {
 		App app = new App();
 		app.insert();
-    }
+    	}
 }
 ```
 2. Menjalankan Program
