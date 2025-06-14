@@ -118,7 +118,7 @@ buka file `pom.xml`, kemudian ganti semua dengan yang ada dibawah ini:
           <configuration>
               <verbose>true</verbose>
               <fork>true</fork>
-              <executable>C:\Program Files\Eclipse Adoptium\jdk-8.0.452.9-hotspot\bin\javac.exe</executable>
+              <executable><!-- Paste Path nya Disini --></executable>
               <compilerVersion>1.3</compilerVersion>
           </configuration>
         </plugin>
@@ -179,6 +179,41 @@ buka file `pom.xml`, kemudian ganti semua dengan yang ada dibawah ini:
   </build>
 </project>
 ```
+
+Setelah itu kembali ke CMD tadi, lalu install dependensi dengan menjalankan command berikut:
+```bash
+mvn install
+```
+
+Jika terjadi error setelah menjalankan `mvn install` yang bertuliskan
+```
+No compiler is provided in this environment. Perhaps you are running on a JRE rather than a JDK?
+```
+pertama jalankan perintah berikut:
+```
+where javac
+```
+Perintah tersebut berfungsi untuk menacri dimana loaksi compiler java. setelah itu copy output dari perintah tersebut.
+Setelah itu kembali ke file `pom.xml` dan cari bari yang bertuliskan berikut:
+```xml
+<executable><!-- Paste Path nya Disini --></executable>
+```
+kemudian ubah isi dari executable menjadi path yang dicopy tadi, contoh:
+```xml
+<executable>C:\Program Files\Eclipse Adoptium\jdk-8.0.452.9-hotspot\bin\javac.exe</executable>
+```
+Setelah itu jalankan ulang perintah `mvn install`
+
+Jika sudah selesai, kemudian jalankan command berikut untuk membuat jar file:
+```bash
+mvn clean compile assembly:single
+```
+Tunggu hingga muncul `BUILD SUCCESS`, lalu jalankan command berikut:
+```bash
+java -jar target\my-app-1.0-SNAPSHOT-jar-with-dependencies.jar
+```
+Jika muncul `Hello World`, maka anda telah berhasil men-setup Java
+
 
 ## 3. Install Mongo 4.4 pada masing-masing Server
 ### Ikuti satu per satu command dibawah ini:
