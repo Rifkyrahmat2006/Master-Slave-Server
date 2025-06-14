@@ -399,7 +399,7 @@ java -jar target\my-app-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
 Apabila setelah dijalankan memunculkan output `Insert data success` maka program telat berhasil dijalankan dan data berhasil di masukan kedalam mongo server
 
-## 11. Memverifikasi Data di MongoDB Replica Set
+## 8. Memverifikasi Data di MongoDB Replica Set
 Periksa Data: Di dalam shell mongo:
 ```
 use NAMA_DATABASE_ANDA; // Ganti dengan nama database yang Anda gunakan di Java
