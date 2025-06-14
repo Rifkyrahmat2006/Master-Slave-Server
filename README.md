@@ -8,7 +8,7 @@
 Built with the tools and technologies:
 
 ![JSON](https://img.shields.io/badge/JSON-000000?style=for-the-badge&logo=json&logoColor=white)
-![C](https://img.shields.io/badge/C-000000?style=for-the-badge&logo=c&logoColor=white)
+![JAVA](https://img.shields.io/badge/Java-000000?style=for-the-badge&logo=openjdk&logoColor=white)
 
 Remote server menggunakan program C ke server mongodb dengan konfigurasi master dan slave. Berikut langkah-langkahnya:
 
