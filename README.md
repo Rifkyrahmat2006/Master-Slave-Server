@@ -4,13 +4,10 @@
 
 
 [![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://instagram.com/rifky.prakoso_)
-[![Languages](https://img.shields.io/github/languages/count/username/repo)](https://github.com/username/repo)
-[![Top Language](https://img.shields.io/github/languages/top/username/repo)](https://github.com/username/repo)
 
 Built with the tools and technologies:
 
 ![JSON](https://img.shields.io/badge/JSON-000000?style=for-the-badge&logo=json&logoColor=white)
-![Markdown](https://img.shields.io/badge/Markdown-000000?style=for-the-badge&logo=markdown&logoColor=white)
 ![C](https://img.shields.io/badge/C-000000?style=for-the-badge&logo=c&logoColor=white)
 
 Remote server menggunakan program C ke server mongodb dengan konfigurasi master dan slave. Berikut langkah-langkahnya:
