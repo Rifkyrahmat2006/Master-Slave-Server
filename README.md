@@ -18,120 +18,133 @@ Remote server menggunakan program Java ke server mongodb dengan konfigurasi mast
 ## 1. Siapkan Resources:
 * Windows (10/11) sebagai Host
 * [Virtual Box](https://www.virtualbox.org/wiki/Downloads)
-* ISO Ubuntu Server sebagai Primary
-* ISO Ubuntu Server sebagai Secondary
-* [MSYS2](https://github.com/msys2/msys2-installer/releases/download/2025-02-21/msys2-x86_64-20250221.exe)
-* [CMake](https://github.com/Kitware/CMake/releases/download/v4.0.2/cmake-4.0.2-windows-x86_64.msi)
-* [Mongo C Driver](https://github.com/mongodb/mongo-c-driver/releases/download/2.0.1/mongo-c-driver-2.0.1.tar.gz)
+* [ISO Ubuntu Server 20.04.6 sebagai Primary](https://kartolo.sby.datautama.net.id/ubuntu-cd/focal/ubuntu-20.04.6-live-server-amd64.iso)
+* [ISO Ubuntu Server 20.04.6 sebagai Secondary](https://kartolo.sby.datautama.net.id/ubuntu-cd/focal/ubuntu-20.04.6-live-server-amd64.iso)
+* [JDK Adoptium 8](https://adoptium.net/download/)
+* [JRE Adoptium 8](https://adoptium.net/download/)
+* [Maven](https://dlcdn.apache.org/maven/maven-3/3.9.10/binaries/apache-maven-3.9.10-bin.tar.gz)
 
 ## 2. Instalasi
 ### 1. Ubuntu Server
+Setup menggunakan VirtualBox dengan konfigurasi jaringan ter-Bridge. Buat dengan menggunakan openssh, untuk mempermudah saat proses pengerjaan kita akan gunakan perintah `ssh` pada windows powershell yang berfungsi untuk meremote OS ubuntu server dari OS client(Windows)
 
-Untuk OS Linux yang support docker: 
-- [Ubuntu Server Noble 24.04 (LTS)](https://ubuntu.com/download/server/thank-you?version=24.04.2&architecture=amd64&lts=true)
-- [Ubuntu Server Jammy 22.04 (LTS)](https://ubuntu.com/download/server/thank-you?version=22.04.5&architecture=amd64&lts=true)
+### 2. Install Java
 
-Disini saya gunakan Ubuntu Server Jammy 22.04 (LTS). Setup menggunakan VirtualBox dengan konfigurasi jaringan ter-Bridge
+### 3. Install Maven
+Ekstrak ke folder yang diinginkan (Contoh: C:\apache-maven-3.9.10)
+copy path yang di bin (C:\apache-maven-3.9.10\bin), lalu buka aplikasi "Edit the system environtment variables", cari 'path' lalu pilih 'new' dan paste path yang disalin dan klik OK
 
-### 2. Install MSYS2 MINGW64 (dengan GCC 15.1.0).
-### 3. Install Mongo C Driver
-Unduh dan Ekstrak Source Code MongoDB C Driver:
-- Ekstrak ke direktori di Windows, misalnya C:\mongo-c-driver-2.0.1.
-- Buka MSYS2 MINGW64 Shell di Windows Anda.
-
-Navigasi ke Direktori Source Code Driver:
+## 3. Setup Project
+buka CMD di path yang diinginkan (Contoh: D:\Maven), lalu jalankan:
 ```
-cd /c/mongo-c-driver-2.0.1
+mvn archetype:generate -DgroupId=com.mycompany.app -DartifactId=my-app -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeVersion=1.5 -DinteractiveMode=false
 ```
-Buat Direktori Build Bersih:
+Anda akan melihat bahwa tujuan generate membuat direktori dengan nama yang sama dengan artifactId. Ubahlah direktori tersebut.
+```bash
+cd my-app
 ```
-mkdir cmake-build
-cd cmake-build
+buka vscode dengan command:
 ```
-Jalankan CMake untuk Mengkonfigurasi Build:
-```
-cmake -G "MinGW Makefiles" -DCMAKE_INSTALL_PREFIX=/c/mongodb_c_driver ..
-```
-Kompilasi Driver:
-```
-mingw32-make
-```
-Instal Driver:
-```
-mingw32-make install
+code .
 ```
 
-## 3. Install Docker pada masing-masing Ubuntu
-### 1. Set up Docker's apt repository.
+## 3. Install Mongo 4.4 pada masing-masing Server
+### Ikuti satu per satu command dibawah ini:
 ```
-# Add Docker's official GPG key:
-sudo apt-get update
-sudo apt-get install ca-certificates curl
-sudo install -m 0755 -d /etc/apt/keyrings
-sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-sudo chmod a+r /etc/apt/keyrings/docker.asc
+curl -fsSL https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -
+```
+This command will return `OK` if the key was added successfully
 
-# Add the repository to Apt sources:
-echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-  $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
-  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-sudo apt-get update
+### Kemudian:
 ```
-### 2. Install the Docker packages.
+echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/4.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.4.list
 ```
-sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-```
-### 3. Verify that the installation is successful by running the hello-world image:
-```
-sudo docker run hello-world
-```
-This command downloads a test image and runs it in a container. When the container runs, it prints a confirmation message and exits.
 
-## 4. Install Mongo 4.4 pada masing-masing Ubuntu
+### After running this command, update your server’s local package index so APT knows where to find the mongodb-org package:
 ```
-sudo docker pull mongo:4.4
+sudo apt update
 ```
-## 5. Menjalankan Kontainer MongoDB untuk Replica Set
-Lihat IP Address dari masing-masing server:
+
+### Following that, you can install MongoDB:
+```
+sudo apt install mongodb-org -y
+```
+
+### Then check the service’s status. Notice that this command doesn’t include .service in the service file definition. systemctl will append this suffix to whatever argument you pass automatically if it isn’t already present, so it isn’t necessary to include it:
+```
+sudo systemctl status mongod
+```
+
+### Run the following systemctl command to start the MongoDB service:
+```
+sudo systemctl start mongod.service
+```
+
+### After confirming that the service is running as expected, enable the MongoDB service to start up at boot:
+```
+sudo systemctl enable mongod
+```
+
+### Referensi:
+```
+https://www.digitalocean.com/community/tutorials/how-to-install-mongodb-on-ubuntu-20-04
+```
+
+## 5. Setup MongoDB untuk Replica Set
+### Lihat IP Address dari masing-masing server:
 ```
 hostname -I
 ```
-### Di Sever Linux Primary/Master
-Jalankan Kontainer mongo_primary
-```
-sudo docker run -d \
-  --name mongo_primary \
-  -p GANTI_IP_PRIMARY/MASTER:27017:27017 \
-  -v mongo_primary_data:/data/db \
-  mongo:4.4 \
-  --replSet "rs0" --bind_ip_all
-```
-(GANTI_IP_PRIMARY/MASTER dengan IP Address server)
 
-### Di Server Linux 2 Secondary/Slave
-Jalankan Kontainer mongo_secondary
+### Edit IP & Replicatiton pada kedua server
 ```
-sudo docker run -d \
-  --name mongo_secondary \
-  -p GANTI_IP_SECONDARY/SLAVE:27017:27017 \
-  -v mongo_secondary_data:/data/db \
-  mongo:4.4 \
-  --replSet "rs0" --bind_ip_all
+sudo nano /etc/mongod.conf
 ```
-(GANTI_IP_SECONDARY/SLAVE dengan IP Address server)
+Cari
+`# network interfaces
+net:
+  port: 27017
+  bindIp: 127.0.0.1`
+lalu tambahkan IP dari `hostname -I` menjadi seperti:
+`# network interfaces
+net:
+  port: 27017
+  bindIp: 127.0.0.1, 192.168.x.x
+`
+Cari
+`#replication`
+Kemudian ubah menjadi
+```
+replication:
+  replSetName: rs0
+```
+lalu untuk exit jalankan `ctrl+x` dan `y` lalu `ENTER`
 
-Verifikasi: Di kedua server, jalankan 
+Agar `mongod.conf` berjalan, kita perlu menjalankan satu per satu command berikut:
 ```
-sudo docker ps
-``` 
-untuk memastikan kontainer `mongo_primary` dan `mongo_secondary` berjalan.
+sudo systemctl restart mongod
+```
+```
+mkdir -p /data/db0
+```
+```
+sudo mongod --replSet rs0 --dbpaath /data/db0 --port 27017
+```
+```
+sudo systemctl restart mongod
+```
+```
+sudo mongod --replSet rs0 --dbpaath /data/db0 --port 27017
+```
+```
+sudo systemctl restart mongod
+```
 
 ## 6. Inisiasi Replica Set
-Langkah ini dilakukan 'HANYA' dari Server Linux 1 (Primary/Master).
-1. Masuk ke Shell MongoDB di mongo_primary:
+Langkah ini dilakukan 'HANYA' dari Server Linux 1 (Primary).
+1. Masuk ke Shell MongoDB di primary:
 ```
-sudo docker exec -it mongo_primary mongo
+mongo
 ```
 2. Inisiasi Replica Set:
 Di dalam shell mongo, jalankan perintah berikut menggunakan IP Address Anda:
@@ -140,8 +153,8 @@ rs.initiate(
   {
     _id: "rs0",
     members: [
-      { _id: 0, host: "GANTI_IP_PRIMARY/MASTER" },
-      { _id: 1, host: "GANTI_IP_SECONDARY/SLAVE" }
+      { _id: 0, host: "GANTI_IP_PRIMARY" },
+      { _id: 1, host: "GANTI_IP_SECONDARY" }
     ]
   }
 )
@@ -153,7 +166,7 @@ Masih di shell mongo pada mongo_primary:
 ```
 rs.status()
 ```
-Pastikan kedua anggota (IP_PRIMARY/MASTER:27017 dan IP_SECONDARY/SLAVE:27017) muncul, satu sebagai PRIMARY dan satu lagi sebagai SECONDARY, keduanya dengan `health: 1`.
+Pastikan kedua anggota (IP_PRIMARY:27017 dan IP_SECONDARY:27017) muncul, satu sebagai PRIMARY dan satu lagi sebagai SECONDARY, keduanya dengan `health: 1`.
 
 ## 7. Menyiapkan Proyek Program C di Windows
 1. Buat dan Masuk ke Direktori Proyek Baru(Anda bisa menggunakan direktori lainnya):
