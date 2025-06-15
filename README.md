@@ -13,7 +13,6 @@ Built with the tools and technologies:
 ![MAVEN](https://img.shields.io/badge/MAVEN-000000?style=for-the-badge&logo=apachemaven&logoColor=white)
 ![MONGODB](https://img.shields.io/badge/-MongoDB-000000?style=for-the-badge&logo=mongodb&logoColor=white)
 ![UBUNTU SERVER](https://img.shields.io/badge/Ubuntu-000000?style=for-the-badge&logo=Ubuntu&logoColor=white)
-ADOPTIUM
 
 Remote server menggunakan program Java ke server mongodb dengan konfigurasi master dan slave. Berikut langkah-langkahnya:
 
@@ -22,8 +21,9 @@ Remote server menggunakan program Java ke server mongodb dengan konfigurasi mast
 * [Virtual Box](https://www.virtualbox.org/wiki/Downloads)
 * [ISO Ubuntu Server 20.04.6 sebagai Primary](https://kartolo.sby.datautama.net.id/ubuntu-cd/focal/ubuntu-20.04.6-live-server-amd64.iso)
 * [ISO Ubuntu Server 20.04.6 sebagai Secondary](https://kartolo.sby.datautama.net.id/ubuntu-cd/focal/ubuntu-20.04.6-live-server-amd64.iso)
-* [JDK Adoptium 8](https://adoptium.net/download/)
-* [JRE Adoptium 8](https://adoptium.net/download/)
+* [JDK Adoptium 8](https://adoptium.net/temurin/releases/?os=any&arch=any&version=8)
+* [JRE Adoptium 8](https://adoptium.net/temurin/releases/?os=any&arch=any&version=8)
+  ![Adoptium](https://imgur.com/a/O8c055T)
 * [Maven](https://dlcdn.apache.org/maven/maven-3/3.9.10/binaries/apache-maven-3.9.10-bin.tar.gz)
 
 ## 2. Instalasi
