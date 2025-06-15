@@ -34,7 +34,18 @@ Setup menggunakan VirtualBox dengan konfigurasi jaringan ter-Bridge. Buat dengan
 
 ### 3. Install Maven
 Ekstrak ke folder yang diinginkan (Contoh: C:\apache-maven-3.9.10)
-copy path yang di bin (C:\apache-maven-3.9.10\bin), lalu buka aplikasi "Edit the system environtment variables", cari 'path' lalu pilih 'new' dan paste path yang disalin dan klik OK
+copy path yang di bin (C:\apache-maven-3.9.10\bin)
+![path bin](https://i.imgur.com/pEss87w.png)
+lalu buka aplikasi "Edit the system environment variables"
+![Edit the system environment variables](https://i.imgur.com/AyRbGYt.png)
+pilih Environment Variables
+![Environment Variables](https://i.imgur.com/uvt07rR.png)
+cari 'path' dan klik 2 kali
+![path](https://i.imgur.com/RgHjkFg.png)
+lalu pilih 'new' 
+![new](https://i.imgur.com/4spVmsc.png)
+paste path yang disalin dan klik OK
+![paste](https://i.imgur.com/K7HSnIB.png)
 
 ## 3. Setup Project
 buka CMD di path yang diinginkan (Contoh: D:\Maven), lalu jalankan:
@@ -297,13 +308,13 @@ sudo systemctl restart mongod
 mkdir -p /data/db0
 ```
 ```bash
-sudo mongod --replSet rs0 --dbpaath /data/db0 --port 27017
+sudo mongod --replSet rs0 --dbpath /data/db0 --port 27017
 ```
 ```bash
 sudo systemctl restart mongod
 ```
 ```bash
-sudo mongod --replSet rs0 --dbpaath /data/db0 --port 27017
+sudo mongod --replSet rs0 --dbpath /data/db0 --port 27017
 ```
 ```bash
 sudo systemctl restart mongod
