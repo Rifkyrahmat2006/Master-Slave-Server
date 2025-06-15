@@ -35,7 +35,7 @@ Setup menggunakan VirtualBox dengan konfigurasi jaringan ter-Bridge. Buat dengan
 ### 3. Install Maven
 Ekstrak ke folder yang diinginkan (Contoh: C:\apache-maven-3.9.10)
 copy path yang di bin (C:\apache-maven-3.9.10\bin)
-![path bin](https://i.imgur.com/pEss87w.png)
+![path bin](https://i.imgur.com/pEss87wm.png)
 lalu buka aplikasi "Edit the system environment variables"
 ![Edit the system environment variables](https://i.imgur.com/AyRbGYt.png)
 pilih Environment Variables
