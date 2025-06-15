@@ -338,8 +338,8 @@ rs.initiate(
   {
     _id: "rs0",
     members: [
-      { _id: 0, host: "GANTI_IP_PRIMARY" },
-      { _id: 1, host: "GANTI_IP_SECONDARY" }
+      { _id: 0, host: "GANTI_IP_PRIMARY:27017" },
+      { _id: 1, host: "GANTI_IP_SECONDARY:27017" }
     ]
   }
 )
