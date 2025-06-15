@@ -22,7 +22,7 @@ Remote server menggunakan program Java ke server mongodb dengan konfigurasi mast
 * [ISO Ubuntu Server 20.04.6 sebagai Primary](https://kartolo.sby.datautama.net.id/ubuntu-cd/focal/ubuntu-20.04.6-live-server-amd64.iso)
 * [ISO Ubuntu Server 20.04.6 sebagai Secondary](https://kartolo.sby.datautama.net.id/ubuntu-cd/focal/ubuntu-20.04.6-live-server-amd64.iso)
 * [JDK Adoptium 8](https://adoptium.net/temurin/releases/?os=any&arch=any&version=8)
-* [JRE Adoptium 8](https://adoptium.net/temurin/releases/?os=any&arch=any&version=8)
+* [JRE Adoptium 8](https://adoptium.net/temurin/releases/?os=any&arch=any&version=8)  
   ![Adoptium](https://i.imgur.com/9PqBLlWl.png)
 * [Maven](https://dlcdn.apache.org/maven/maven-3/3.9.10/binaries/apache-maven-3.9.10-bin.tar.gz)
 
