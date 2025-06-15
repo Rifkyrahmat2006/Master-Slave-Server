@@ -43,10 +43,10 @@ Setup menggunakan VirtualBox dengan konfigurasi jaringan ter-Bridge. Buat dengan
 #### pilih Environment Variables
 ![Environment Variables](https://i.imgur.com/uvt07rRl.png)
 
-#### cari 'path' dan klik 2 kali
+#### cari path dan klik 2 kali
 ![path](https://i.imgur.com/RgHjkFgl.png)
 
-#### lalu pilih 'new' 
+#### lalu pilih new 
 ![new](https://i.imgur.com/4spVmscl.png)
 
 #### paste path yang disalin dan klik OK
