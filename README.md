@@ -23,7 +23,7 @@ Remote server menggunakan program Java ke server mongodb dengan konfigurasi mast
 * [ISO Ubuntu Server 20.04.6 sebagai Secondary](https://kartolo.sby.datautama.net.id/ubuntu-cd/focal/ubuntu-20.04.6-live-server-amd64.iso)
 * [JDK Adoptium 8](https://adoptium.net/temurin/releases/?os=any&arch=any&version=8)
 * [JRE Adoptium 8](https://adoptium.net/temurin/releases/?os=any&arch=any&version=8)
-  ![Adoptium](https://i.imgur.com/9PqBLlWh.png)
+  ![Adoptium](https://i.imgur.com/9PqBLlWl.png)
 * [Maven](https://dlcdn.apache.org/maven/maven-3/3.9.10/binaries/apache-maven-3.9.10-bin.tar.gz)
 
 ## 2. Instalasi
@@ -35,17 +35,17 @@ Setup menggunakan VirtualBox dengan konfigurasi jaringan ter-Bridge. Buat dengan
 ### 3. Install Maven
 Ekstrak ke folder yang diinginkan (Contoh: C:\apache-maven-3.9.10)
 copy path yang di bin (C:\apache-maven-3.9.10\bin)
-![path bin](https://i.imgur.com/pEss87wh.png)
+![path bin](https://i.imgur.com/pEss87wl.png)
 lalu buka aplikasi "Edit the system environment variables"
-![Edit the system environment variables](https://i.imgur.com/AyRbGYth.png)
+![Edit the system environment variables](https://i.imgur.com/AyRbGYtl.png)
 pilih Environment Variables
-![Environment Variables](https://i.imgur.com/uvt07rRh.png)
+![Environment Variables](https://i.imgur.com/uvt07rRl.png)
 cari 'path' dan klik 2 kali
-![path](https://i.imgur.com/RgHjkFgh.png)
+![path](https://i.imgur.com/RgHjkFgl.png)
 lalu pilih 'new' 
-![new](https://i.imgur.com/4spVmsch.png)
+![new](https://i.imgur.com/4spVmscl.png)
 paste path yang disalin dan klik OK
-![paste](https://i.imgur.com/K7HSnIBh.png)
+![paste](https://i.imgur.com/K7HSnIBl.png)
 
 ## 3. Setup Project
 buka CMD di path yang diinginkan (Contoh: D:\Maven), lalu jalankan:
