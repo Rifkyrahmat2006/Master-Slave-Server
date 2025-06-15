@@ -233,7 +233,7 @@ java -jar target\my-app-1.0-SNAPSHOT-jar-with-dependencies.jar
 Jika muncul `Hello World`, maka anda telah berhasil men-setup Java
 
 
-## 3. Install Mongo 4.4 pada masing-masing Server
+## 4. Install Mongo 4.4 pada masing-masing Server
 ### Ikuti satu per satu command dibawah ini:
 ```bash
 curl -fsSL https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -
