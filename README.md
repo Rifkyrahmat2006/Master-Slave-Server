@@ -211,7 +211,7 @@ buka file `pom.xml`, kemudian ganti semua dengan yang ada dibawah ini:
 ```
 
 Perintah tersebut berfungsi untuk menacri dimana loaksi compiler java. setelah itu copy output dari perintah tersebut.
-Setelah itu kembali ke file `pom.xml` dan cari bari yang bertuliskan berikut:
+Setelah itu kembali ke file `pom.xml` dan cari baris yang bertuliskan berikut:
 ```xml
 <executable><!-- Paste Path nya Disini --></executable>
 ```
