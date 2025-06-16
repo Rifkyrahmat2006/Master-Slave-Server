@@ -61,6 +61,18 @@ Anda akan melihat bahwa tujuan generate membuat direktori dengan nama yang sama 
 ```bash
 cd my-app
 ```
+Install dependensi dengan menjalankan command berikut:
+```bash
+mvn install
+```
+Jika terjadi error setelah menjalankan `mvn install` yang bertuliskan
+```
+No compiler is provided in this environment. Perhaps you are running on a JRE rather than a JDK?
+```
+pertama jalankan perintah berikut:
+```
+where javac
+```
 buka vscode dengan command:
 ```bash
 code .
@@ -198,19 +210,6 @@ buka file `pom.xml`, kemudian ganti semua dengan yang ada dibawah ini:
 </project>
 ```
 
-
-Setelah itu kembali ke CMD tadi, lalu install dependensi dengan menjalankan command berikut:
-```bash
-mvn install
-```
-Jika terjadi error setelah menjalankan `mvn install` yang bertuliskan
-```
-No compiler is provided in this environment. Perhaps you are running on a JRE rather than a JDK?
-```
-pertama jalankan perintah berikut:
-```
-where javac
-```
 Perintah tersebut berfungsi untuk menacri dimana loaksi compiler java. setelah itu copy output dari perintah tersebut.
 Setelah itu kembali ke file `pom.xml` dan cari bari yang bertuliskan berikut:
 ```xml
@@ -220,8 +219,10 @@ kemudian ubah isi dari executable menjadi path yang dicopy tadi, contoh:
 ```xml
 <executable>C:\Program Files\Eclipse Adoptium\jdk-8.0.452.9-hotspot\bin\javac.exe</executable>
 ```
-Setelah itu jalankan ulang perintah `mvn install`
-
+Setelah itu kembali ke CMD tadi, jalankan ulang perintah berikut:
+```bash
+mvn install
+```
 Jika sudah selesai, kemudian jalankan command berikut untuk membuat jar file:
 ```bash
 mvn clean compile assembly:single
