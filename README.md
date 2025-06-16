@@ -29,6 +29,7 @@ Remote server menggunakan program Java ke server mongodb dengan konfigurasi mast
 ## 2. Instalasi
 ### 1. Ubuntu Server
 Setup menggunakan VirtualBox dengan konfigurasi jaringan ter-Bridge. Buat dengan menggunakan openssh, untuk mempermudah saat proses pengerjaan kita akan gunakan perintah `ssh` pada windows powershell yang berfungsi untuk meremote OS ubuntu server dari OS client(Windows)
+Link Tutor Youtube: [https://youtu.be/aOOu2Psx9lk](https://youtu.be/aOOu2Psx9lk)
 
 ### 2. Install Java
 
