@@ -312,7 +312,7 @@ Agar `mongod.conf` berjalan, kita perlu menjalankan satu per satu command beriku
 sudo systemctl restart mongod
 ```
 ```bash
-mkdir -p /data/db0
+sudo mkdir -p /data/db0
 ```
 ```bash
 sudo mongod --replSet rs0 --dbpath /data/db0 --port 27017
