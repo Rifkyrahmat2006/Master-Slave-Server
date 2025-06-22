@@ -160,7 +160,7 @@ Buka file `pom.xml` dan ganti seluruh isinya dengan konfigurasi berikut
             </descriptorRefs>
             <archive>
               <manifest>
-                <mainClass>local</mainClass>
+                <mainClass>local.App</mainClass>
               </manifest>
             </archive>
           </configuration>
@@ -360,7 +360,7 @@ rs.initiate(
   }
 )
 ```
-Tunggu beberapa saat hingga *prompt* di *shell* Anda berubah menjadi `rs0:PRIMARY>`
+Tunggu beberapa saat hingga *prompt* di *shell* Anda berubah menjadi `rs0 [direct: primary] test>`
 
 ### Verifikasi Status
 ```js
@@ -436,8 +436,3 @@ use NAMA_DATABASE_ANDA;
 // Ganti dengan nama collection yang Anda gunakan di Java
 db.NAMA_COLLECTION_ANDA.find().pretty();
 ```
-Anda seharusnya dapat melihat data yang baru saja dimasukkan. Untuk memverifikasi di server SECONDARY, Anda mungkin perlu menjalankan perintah `rs.secondaryOk()` terlebih dahulu sebelum menjalankan perintah diatas
-
-
-
- 
