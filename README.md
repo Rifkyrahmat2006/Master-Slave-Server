@@ -8,88 +8,65 @@
 
 Built with the tools and technologies:
 
-![JSON](https://img.shields.io/badge/JSON-000000?style=for-the-badge&logo=json&logoColor=white)
 ![JAVA](https://img.shields.io/badge/Java-000000?style=for-the-badge&logo=openjdk&logoColor=white)
 ![MAVEN](https://img.shields.io/badge/MAVEN-000000?style=for-the-badge&logo=apachemaven&logoColor=white)
 ![MONGODB](https://img.shields.io/badge/-MongoDB-000000?style=for-the-badge&logo=mongodb&logoColor=white)
 ![UBUNTU SERVER](https://img.shields.io/badge/Ubuntu-000000?style=for-the-badge&logo=Ubuntu&logoColor=white)
 
-Remote server menggunakan program Java ke server mongodb dengan konfigurasi master dan slave. Berikut langkah-langkahnya:
+Proyek ini mendemonstrasikan cara menghubungkan program Java ke server MongoDB dengan konfigurasi master-slave (*replica set*) secara *remote*. Berikut adalah langkah-langkahnya:
 
-## 1. Siapkan Resources:
-* Windows (10/11) sebagai Host
-* [Virtual Box](https://www.virtualbox.org/wiki/Downloads)
-* [ISO Ubuntu Server 20.04.6 sebagai Primary](https://kartolo.sby.datautama.net.id/ubuntu-cd/focal/ubuntu-20.04.6-live-server-amd64.iso)
-* [ISO Ubuntu Server 20.04.6 sebagai Secondary](https://kartolo.sby.datautama.net.id/ubuntu-cd/focal/ubuntu-20.04.6-live-server-amd64.iso)
-* [JDK Adoptium 8](https://adoptium.net/temurin/releases/?os=any&arch=any&version=8)
-* [JRE Adoptium 8](https://adoptium.net/temurin/releases/?os=any&arch=any&version=8)  
-  ![Adoptium](https://i.imgur.com/9PqBLlWl.png)
-* [Maven](https://dlcdn.apache.org/maven/maven-3/3.9.10/binaries/apache-maven-3.9.10-bin.tar.gz)
+## 1. Siapkan Resources
+* Windows (10/11) sebagai *Host*
+* [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
+* [ISO Ubuntu Server 24.04 LTS](https://releases.ubuntu.com/24.04.2/ubuntu-24.04.2-live-server-amd64.iso) (versi LTS terbaru saat panduan ini dibuat)
+* [Java SE Development Kit 21](https://download.oracle.com/java/21/latest/jdk-21_windows-x64_bin.msi) (versi LTS terbaru saat panduan ini dibuat)
+* [Maven 3.9.10](https://dlcdn.apache.org/maven/maven-3/3.9.10/binaries/apache-maven-3.9.10-bin.zip) (versi *Stable* terbaru saat panduan ini dibuat)
 
 ## 2. Instalasi
 ### 1. Ubuntu Server
-Setup menggunakan VirtualBox dengan konfigurasi jaringan ter-Bridge. Buat dengan menggunakan openssh, untuk mempermudah saat proses pengerjaan kita akan gunakan perintah `ssh` pada windows powershell yang berfungsi untuk meremote OS ubuntu server dari OS client(Windows)
-Link Tutor Youtube: [https://youtu.be/aOOu2Psx9lk](https://youtu.be/aOOu2Psx9lk)
+Lakukan instalasi Ubuntu Server di VirtualBox dengan konfigurasi jaringan ***Bridged Adapter***. Pastikan untuk menginstal server OpenSSH selama proses instalasi. Hal ini akan mempermudah pengerjaan karena kita dapat me-*remote* server Ubuntu dari Windows menggunakan perintah `ssh` di Terminal.
+
+Tautan Tutorial YouTube: [Cara menginstall ubuntu server untuk membuat master-slave server](https://youtu.be/aOOu2Psx9lk)
 
 ### 2. Install Java
 
 ### 3. Install Maven
-#### Ekstrak ke folder yang diinginkan (Contoh: C:\apache-maven-3.9.10)
-#### copy path yang di bin (C:\apache-maven-3.9.10\bin)
-![path bin](https://i.imgur.com/pEss87wl.png)
+#### Ekstrak file Maven ke folder yang Anda inginkan (contoh `C:\apache-maven-3.9.10`)
 
-#### lalu buka aplikasi "Edit the system environment variables"
-![Edit the system environment variables](https://i.imgur.com/AyRbGYtl.png)
+#### Buka folder `bin` di dalam direktori Maven, lalu salin *path*-nya (`C:\apache-maven-3.9.10\bin`)
+![copy path](gif/copyPath.gif)
 
-#### pilih Environment Variables
-![Environment Variables](https://i.imgur.com/uvt07rRl.png)
+#### Cari dan buka `Edit the system environment variables`
+![edit](gif/edit.gif)
 
-#### cari path dan klik 2 kali
-![path](https://i.imgur.com/RgHjkFgl.png)
-
-#### lalu pilih new 
-![new](https://i.imgur.com/4spVmscl.png)
-
-#### paste path yang disalin dan klik OK
-![paste](https://i.imgur.com/K7HSnIBl.png)
+#### Pilih `Environment Variables` ▶️ klik dua kali pada variabel `Path` ▶️ pilih `New` ▶️ tempelkan (*paste*) *path* yang sudah disalin sebelumnya ▶️ tekan `OK` pada semua jendela yang terbuka
+![paste](gif/paste.gif)
 
 ## 3. Setup Project
-buka CMD di path yang diinginkan (Contoh: D:\Maven), lalu jalankan:
+Buka `cmd` di direktori yang Anda inginkan (contoh `C:\projek`)
+
+![cmd](gif/cmd.gif)
+
+Lalu jalankan perintah berikut untuk membuat proyek Maven baru
 ```bash
-mvn archetype:generate -DgroupId=com.mycompany.app -DartifactId=my-app -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeVersion=1.5 -DinteractiveMode=false
+mvn archetype:generate -DgroupId=local -DartifactId=mongo-app -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeVersion=1.5 -DinteractiveMode=false
 ```
-Anda akan melihat bahwa tujuan generate membuat direktori dengan nama yang sama dengan artifactId. Ubahlah direktori tersebut.
+Setelah perintah selesai dieksekusi, sebuah folder baru dengan nama yang sesuai dengan `-DartifactId` (yaitu `mongo-app`) akan dibuat. Masuk ke dalam direktori tersebut
 ```bash
-cd my-app
+cd mongo-app
 ```
-Install dependensi dengan menjalankan command berikut:
-```bash
-mvn install
-```
-Jika terjadi error setelah menjalankan `mvn install` yang bertuliskan
-```
-No compiler is provided in this environment. Perhaps you are running on a JRE rather than a JDK?
-```
-pertama jalankan perintah berikut:
-```
-where javac
-```
-buka vscode dengan command:
-```bash
-code .
-```
-buka file `pom.xml`, kemudian ganti semua dengan yang ada dibawah ini:
+Buka file `pom.xml` dan ganti seluruh isinya dengan konfigurasi berikut
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.mycompany.app</groupId>
-  <artifactId>my-app</artifactId>
+  <groupId>local</groupId>
+  <artifactId>mongo-app</artifactId>
   <version>1.0-SNAPSHOT</version>
 
-  <name>my-app</name>
+  <name>mongo-app</name>
   <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
 
@@ -103,7 +80,7 @@ buka file `pom.xml`, kemudian ganti semua dengan yang ada dibawah ini:
       <dependency>
         <groupId>org.junit</groupId>
         <artifactId>junit-bom</artifactId>
-        <version>5.11.0</version>
+        <version>5.13.1</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -122,12 +99,13 @@ buka file `pom.xml`, kemudian ganti semua dengan yang ada dibawah ini:
       <artifactId>junit-jupiter-params</artifactId>
       <scope>test</scope>
     </dependency>
-
-    <dependency>
+	
+	<dependency>
       <groupId>org.mongodb</groupId>
       <artifactId>mongodb-driver-sync</artifactId>
-      <version>4.11.0</version>
+      <version>5.5.1</version>
     </dependency>
+	
   </dependencies>
 
   <build>
@@ -146,12 +124,6 @@ buka file `pom.xml`, kemudian ganti semua dengan yang ada dibawah ini:
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.13.0</version>
-          <configuration>
-              <verbose>true</verbose>
-              <fork>true</fork>
-              <executable><!-- Paste Path nya Disini --></executable>
-              <compilerVersion>1.3</compilerVersion>
-          </configuration>
         </plugin>
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
@@ -178,163 +150,205 @@ buka file `pom.xml`, kemudian ganti semua dengan yang ada dibawah ini:
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>3.6.1</version>
         </plugin>
-
-        <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <version>3.7.1</version>
-        <configuration>
-          <descriptorRefs>
-            <descriptorRef>jar-with-dependencies</descriptorRef>
-          </descriptorRefs>
-     
-           <archive>
-            <manifest>
-              <addClasspath>true</addClasspath>
-              <mainClass>com.mycompany.app.App</mainClass>
-            </manifest>
-          </archive>
-         
-        </configuration>
-        <executions>
-          <execution>
-            <id>make-assembly</id> <!-- this is used for inheritance merges -->
-            <phase>package</phase> <!-- bind to the packaging phase -->
-            <goals>
-              <goal>single</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
+		
+		<plugin>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <version>3.6.0</version>
+          <configuration>
+            <descriptorRefs>
+              <descriptorRef>jar-with-dependencies</descriptorRef>
+            </descriptorRefs>
+            <archive>
+              <manifest>
+                <mainClass>local</mainClass>
+              </manifest>
+            </archive>
+          </configuration>
+          <executions>
+            <execution>
+              <id>make-assembly</id>
+              <phase>package</phase>
+              <goals>
+                <goal>single</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+		
       </plugins>
     </pluginManagement>
   </build>
 </project>
 ```
-
-Perintah tersebut berfungsi untuk menacri dimana loaksi compiler java. setelah itu copy output dari perintah tersebut.
-Setelah itu kembali ke file `pom.xml` dan cari baris yang bertuliskan berikut:
-```xml
-<executable><!-- Paste Path nya Disini --></executable>
-```
-kemudian ubah isi dari executable menjadi path yang dicopy tadi, contoh:
-```xml
-<executable>C:\Program Files\Eclipse Adoptium\jdk-8.0.452.9-hotspot\bin\javac.exe</executable>
-```
-Setelah itu kembali ke CMD tadi, jalankan ulang perintah berikut:
-```bash
-mvn install
-```
-Jika sudah selesai, kemudian jalankan command berikut untuk membuat jar file:
+Setelah menyimpan perubahan pada `pom.xml`, jalankan perintah berikut untuk membuat file `.jar`
 ```bash
 mvn clean compile assembly:single
 ```
-Tunggu hingga muncul `BUILD SUCCESS`, lalu jalankan command berikut:
+Tunggu hingga proses selesai dan muncul pesan `BUILD SUCCESS`. Kemudian, jalankan perintah berikut
 ```bash
-java -jar target\my-app-1.0-SNAPSHOT-jar-with-dependencies.jar
+java -jar target\mongo-app-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
-Jika muncul `Hello World`, maka anda telah berhasil men-setup Java
+Jika output `Hello World!` muncul di konsol, maka Anda telah berhasil mengatur proyek Java dengan benar
 
 
-## 4. Install Mongo 4.4 pada masing-masing Server
-### Ikuti satu per satu command dibawah ini:
+## 4. Instalasi MongoDB Community Edition di Setiap Server
+### Impor kunci publik GPG MongoDB
 ```bash
-curl -fsSL https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -
+curl -fsSL https://www.mongodb.org/static/pgp/server-8.0.asc | \
+   sudo gpg -o /usr/share/keyrings/mongodb-server-8.0.gpg \
+   --dearmor
 ```
-This command will return `OK` if the key was added successfully
-
-### Kemudian:
+### Buat *list file* untuk MongoDB
 ```bash
-echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/4.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.4.list
+echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-8.0.gpg ] https://repo.mongodb.org/apt/ubuntu noble/mongodb-org/8.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-8.0.list
 ```
 
-### After running this command, update your server’s local package index so APT knows where to find the mongodb-org package:
+### Muat ulang *database package* lokal
 ```bash
 sudo apt update
 ```
 
-### Following that, you can install MongoDB:
+### Install MongoDB Community Server
 ```bash
-sudo apt install mongodb-org -y
+sudo apt-get install -y mongodb-org
 ```
 
-### Then check the service’s status. Notice that this command doesn’t include .service in the service file definition. systemctl will append this suffix to whatever argument you pass automatically if it isn’t already present, so it isn’t necessary to include it:
+### Jalankan MongoDB
+```bash
+sudo systemctl start mongod
+```
+
+### Verifikasi bahwa MongoDB telah berhasil dijalankan
 ```bash
 sudo systemctl status mongod
 ```
 
-### Run the following systemctl command to start the MongoDB service:
-```bash
-sudo systemctl start mongod.service
-```
-
-### After confirming that the service is running as expected, enable the MongoDB service to start up at boot:
+### Aktifkan layanan MongoDB agar berjalan otomatis saat *booting*
 ```bash
 sudo systemctl enable mongod
 ```
 
-### Referensi:
-```bash
-https://www.digitalocean.com/community/tutorials/how-to-install-mongodb-on-ubuntu-20-04
-```
+Sumber: [Install MongoDB Community Edition on Ubuntu](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-ubuntu/)
 
 ## 5. Setup MongoDB untuk Replica Set
-### Lihat IP Address dari masing-masing server:
+### Periksa *IP Address* dari setiap server
 ```bash
 hostname -I
 ```
 
-### Edit IP & Replicatiton pada kedua server
+### Ubah `bindIp` & `replSetName` di `/etc/mongod.conf` pada kedua server
+Gunakan editor `nano` untuk mengubah file konfigurasi MongoDB
 ```bash
 sudo nano /etc/mongod.conf
 ```
-Cari
-`# network interfaces
+Setelah file terbuka, isinya akan terlihat seperti ini
+```yaml
+# mongod.conf
+
+# for documentation of all options, see:
+#   http://docs.mongodb.org/manual/reference/configuration-options/
+
+# Where and how to store data.
+storage:
+  dbPath: /var/lib/mongodb
+#  engine:
+#  wiredTiger:
+
+# where to write logging data.
+systemLog:
+  destination: file
+  logAppend: true
+  path: /var/log/mongodb/mongod.log
+
+# network interfaces
 net:
   port: 27017
-  bindIp: 127.0.0.1`
-lalu tambahkan IP dari `hostname -I` menjadi seperti:
-`# network interfaces
+  bindIp: 127.0.0.1
+
+
+# how the process runs
+processManagement:
+  timeZoneInfo: /usr/share/zoneinfo
+
+#security:
+
+#operationProfiling:
+
+#replication:
+
+#sharding:
+
+## Enterprise-Only Options:
+
+#auditLog:
+```
+Tambahkan *IP Address* yang sebelumnya didapatkan dari `hostname -I` ke baris `bindIp`, pisahkan dengan koma (contoh `192.168.33.70`)
+```yaml
 net:
   port: 27017
-  bindIp: 127.0.0.1, 192.168.x.x
-`
-Cari
-`#replication`
-Kemudian ubah menjadi
-```bash
+  bindIp: 127.0.0.1, 192.168.33.70
+```
+Cari bagian `#replication:` dan aktifkan dengan menghapus tanda pagar (`#`), lalu tambahkan `replSetName: "rs0"`
+```yaml
 replication:
-  replSetName: rs0
+  replSetName: "rs0"
 ```
-lalu untuk exit jalankan `ctrl+x` dan `y` lalu `ENTER`
+Sekarang, keseluruhan isi file `mongod.conf` Anda akan terlihat seperti ini
+```yaml
+# mongod.conf
 
-Agar `mongod.conf` berjalan, kita perlu menjalankan satu per satu command berikut:
-```bash
-sudo systemctl restart mongod
+# for documentation of all options, see:
+#   http://docs.mongodb.org/manual/reference/configuration-options/
+
+# Where and how to store data.
+storage:
+  dbPath: /var/lib/mongodb
+#  engine:
+#  wiredTiger:
+
+# where to write logging data.
+systemLog:
+  destination: file
+  logAppend: true
+  path: /var/log/mongodb/mongod.log
+
+# network interfaces
+net:
+  port: 27017
+  bindIp: 127.0.0.1, 192.168.33.70
+
+
+# how the process runs
+processManagement:
+  timeZoneInfo: /usr/share/zoneinfo
+
+#security:
+
+#operationProfiling:
+
+replication:
+  replSetName: "rs0"
+
+#sharding:
+
+## Enterprise-Only Options:
+
+#auditLog:
 ```
-```bash
-sudo mkdir -p /data/db0
-```
-```bash
-sudo mongod --replSet rs0 --dbpath /data/db0 --port 27017
-```
-```bash
-sudo systemctl restart mongod
-```
-```bash
-sudo mongod --replSet rs0 --dbpath /data/db0 --port 27017
-```
+Tekan `Ctrl + O` kemudian `Enter` untuk menyimpan perubahan, tekan `Ctrl + X` untuk keluar dari `nano`
+
+Agar perubahan pada `mongod.conf` dapat diterapkan, kita perlu me-*restart* layanan `mongod`
 ```bash
 sudo systemctl restart mongod
 ```
 
-## 6. Inisiasi Replica Set
-Langkah ini dilakukan 'HANYA' dari Server Linux 1 (Primary).
-1. Masuk ke Shell MongoDB di primary:
+## 6. Deploy Replica Set
+### Langkah ini HANYA dilakukan di salah satu server, yang akan menjadi *node* PRIMARY
+Masuk ke *shell* MongoDB di server PRIMARY
 ```bash
-mongo
+mongosh
 ```
-2. Inisiasi Replica Set:
-Di dalam shell mongo, jalankan perintah berikut menggunakan IP Address Anda:
+Di dalam *shell* MongoDB, jalankan perintah berikut. Pastikan untuk mengganti `GANTI_IP_PRIMARY` dan `GANTI_IP_SECONDARY` dengan alamat IP server Anda yang sesuai
 ```js
 rs.initiate(
   {
@@ -346,19 +360,18 @@ rs.initiate(
   }
 )
 ```
-Tunggu hingga prompt berubah menjadi `rs0:PRIMARY>`.
+Tunggu beberapa saat hingga *prompt* di *shell* Anda berubah menjadi `rs0:PRIMARY>`
 
-3. Verifikasi Status:
-Masih di shell mongo pada mongo_primary:
+### Verifikasi Status
 ```js
 rs.status()
 ```
-Pastikan kedua anggota (IP_PRIMARY:27017 dan IP_SECONDARY:27017) muncul, satu sebagai PRIMARY dan satu lagi sebagai SECONDARY, keduanya dengan `health: 1`.
+Pastikan kedua anggota (`IP_PRIMARY:27017` dan `IP_SECONDARY:27017`) muncul dalam daftar, di mana satu berstatus `PRIMARY` dan yang lainnya `SECONDARY`, serta keduanya memiliki nilai `health: 1`
 
-## 7. Menyiapkan Program Java di Client(Windows)
-### Ubah semua App.java, menjadi seperti di bawah ini:
+## 7. Menyiapkan dan Menjalankan Program Java di *Host* (Windows)
+### Ubah seluruh isi file `App.java` yang berlokasi di `C:\projek\mongo-app\src\main\java\local\App.java` dengan kode di bawah ini
 ```java
-package com.mycompany.app;
+package local;
 
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoException;
@@ -367,23 +380,21 @@ import com.mongodb.client.model.InsertOneOptions;
 import org.bson.Document;
 import static com.mongodb.client.model.Filters.regex;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 public class App {
-	String PORT_MASTER = "192.x.x.x:27017"; // IP_MASTER:PORT
-	String PORT_SLAVE = "192.x.x.x:27017"; // IP_SLAVE:PORT 
+	String PORT_MASTER = "192.x.x.x:27017"; // IP_PRIMARY:PORT
+	String PORT_SLAVE = "192.x.x.x:27017"; // IP_SECONDARY:PORT
 
 	public void insert() {
-        	String uri = "mongodb://" + PORT_MASTER + "," + PORT_SLAVE;
-        	String dbName = "test"; // nama database;
-        	String collName = "data_apalah"; // nama collection/table;
+		String uri = "mongodb://" + PORT_MASTER + "," + PORT_SLAVE;
+		String dbName = "test"; // nama database;
+		String collName = "data_apalah"; // nama collection/table;
 
-        	try (MongoClient mongoClient = MongoClients.create(uri)) {
-            		MongoDatabase database = mongoClient.getDatabase(dbName);
-            		MongoCollection<Document> collection = database.getCollection(collName);
+		try (MongoClient mongoClient = MongoClients.create(uri)) {
+			MongoDatabase database = mongoClient.getDatabase(dbName);
+			MongoCollection<Document> collection = database.getCollection(collName);
 
 			Document doc = new Document();
 			doc.append("name", "buidanto");
@@ -393,37 +404,39 @@ public class App {
 				collection.insertOne(doc, new InsertOneOptions());
 				System.out.println("Insert data success");
 			} catch (MongoException me) {
-                		System.err.println("Insert failed: " + me.getMessage());
-            		}
-        	} catch (Exception e) {
+				System.err.println("Insert failed: " + me.getMessage());
+			}
+		} catch (Exception e) {
 			System.err.println("[ERROR]: " + e.getMessage());
 		}
-    	}
+	}
 
-    	public static void main(String[] args) {
+	public static void main(String[] args) {
 		App app = new App();
 		app.insert();
-    	}
+	}
 }
 ```
-2. Menjalankan Program
-Setelah mengubah isi `App.java`, jalankan ulang perintah dibawah ini untuk membersihkan cache sebelumnya dan men-compile ulang project
+Setelah mengubah isi `App.java`, jalankan kembali perintah berikut untuk membersihkan *cache* sebelumnya dan mengkompilasi ulang proyek
 ```bash
 mvn clean compile assembly:single
 ```
-Kemudian jalankan jar file:
+Kemudian, jalankan file `.jar` yang telah dibuat
 ```bash
-java -jar target\my-app-1.0-SNAPSHOT-jar-with-dependencies.jar
+java -jar target\mongo-app-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
-Apabila setelah dijalankan memunculkan output `Insert data success` maka program telat berhasil dijalankan dan data berhasil di masukan kedalam mongo server
+Apabila muncul output `Insert data success`, maka program telah sukses dijalankan dan data berhasil dimasukkan ke dalam server MongoDB
 
-## 8. Memverifikasi Data di MongoDB Replica Set
-Periksa Data: Di dalam shell mongo:
+## 8. Verifikasi Data pada Replica Set MongoDB
+Masuk kembali ke *shell* MongoDB di server mana pun (PRIMARY atau SECONDARY)
+```js
+// Ganti dengan nama database yang Anda gunakan di Java
+use NAMA_DATABASE_ANDA;
+
+// Ganti dengan nama collection yang Anda gunakan di Java
+db.NAMA_COLLECTION_ANDA.find().pretty();
 ```
-use NAMA_DATABASE_ANDA; // Ganti dengan nama database yang Anda gunakan di Java
-db.NAMA_COLLECTION_ANDA.find().pretty(); // Ganti dengan nama collection
-```
-Anda seharusnya melihat data baru. Anda juga bisa terhubung ke SECONDARY (Server Linux 2) jalankan `rs.slaveOk()` atau `rs.secondaryOk()`, lalu periksa datanya menggunakan perintah diatas untuk melihat replikasi.
+Anda seharusnya dapat melihat data yang baru saja dimasukkan. Untuk memverifikasi di server SECONDARY, Anda mungkin perlu menjalankan perintah `rs.secondaryOk()` terlebih dahulu sebelum menjalankan perintah diatas
 
 
 
